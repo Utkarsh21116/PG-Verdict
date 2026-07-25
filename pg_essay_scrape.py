@@ -8,7 +8,7 @@ from datetime import datetime
 
 BASE_URL = "https://paulgraham.com"
 ARTICLES_URL = f"{BASE_URL}/articles.html"
-OUTPUT_DIR = "/home/claude/pg_essays"
+OUTPUT_DIR = "/home/pg_essays"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 HEADERS = {
