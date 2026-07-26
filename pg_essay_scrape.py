@@ -129,7 +129,7 @@ def main():
         time.sleep(1.2)
 
     # save master JSON
-    master_path = os.path.join(OUTPUT_DIR, "_all_essays.json")
+    master_path = os.path.join(OUTPUT_DIR, "all_essays.json")
     with open(master_path, "w", encoding="utf-8") as f:
         json.dump(essays, f, ensure_ascii=False, indent=2)
 
