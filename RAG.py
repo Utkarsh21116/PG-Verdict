@@ -1,8 +1,8 @@
 import json
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_chroma import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -32,10 +32,20 @@ for essay in essays:
             }
         })
 
-embedding = GoogleGenerativeAIEmbeddings(model="gemini-embedding-001")
+embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 vector_db = Chroma.from_texts(
     texts=[doc["page_content"] for doc in document],
     metadatas=[doc["metadata"] for doc in document],
-    embedding=embedding,
+    embedding=embeddings,
     persist_directory="./pg_chroma_db"
 )
+
+retriever = vector_db.as_retriever(search_type='similarity',search_kwargs={'k':4})
+
+def get_retriever():
+    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+    vector_store = Chroma(
+        persist_directory="./pg_chroma_db",
+        embedding_function=embeddings
+    )
+    return vector_store.as_retriever(search_type='similarity',search_kwargs={'k':4})
